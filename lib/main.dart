@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'screens/homepage_screen.dart'; // Import the homepage screen
+import 'screens/onboarding_screen.dart'; // Import the *correct* onboarding screen
+import 'screens/welcome_screen.dart'; // Import the Welcome screen
+
 void main() {
   runApp(const ReadingApp());
 }
@@ -15,43 +19,15 @@ class ReadingApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        useMaterial3: true, // Optional: Enable Material 3
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const OnboardingScreen(),
-        '/discovery': (context) => const DiscoveryScreen(),
+        '/': (context) => const WelcomeScreen(),
+        '/onboarding': (context) => const OnboardingScreen(),
+        '/discovery': (context) => HomepageScreen(),
       },
-    );
-  }
-}
-
-class OnboardingScreen extends StatelessWidget {
-  const OnboardingScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Onboarding')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/discovery');
-          },
-          child: const Text('Continue to Discovery'),
-        ),
-      ),
-    );
-  }
-}
-
-class DiscoveryScreen extends StatelessWidget {
-  const DiscoveryScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Discovery Feed')),
-      body: const Center(child: Text('Here will be the curated story list.')),
     );
   }
 }
