@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:reading_app/theme/app_theme.dart'; // Ensure this is the only import for app_theme
 
 import 'screens/homepage_screen.dart'; // Import the homepage screen
 import 'screens/onboarding_screen.dart'; // Import the *correct* onboarding screen
 import 'screens/welcome_screen.dart'; // Import the Welcome screen
 
+// import 'theme/app_theme.dart';
 void main() {
   runApp(const ReadingApp());
 }
@@ -16,12 +18,7 @@ class ReadingApp extends StatelessWidget {
     return MaterialApp(
       title: 'Reading App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        useMaterial3: true, // Optional: Enable Material 3
-      ),
+      theme: AppTheme.theme, // Correctly apply AppTheme.theme here
       initialRoute: '/',
       routes: {
         '/': (context) => const WelcomeScreen(),
