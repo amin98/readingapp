@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Brand palette
-const _cream = Color(0xFFF7EED6);
-const _ink = Color(0xFF39210B);
-const _primary = Color(0xFF0D74E3); // blue buttons
-const _primaryDark = Color(0xFF0A5CC0);
-const _warning = Color(0xFFE0B404);
-
 class AppTheme {
   // --- Color Palette ---
   static const Color primaryColor = Color(0xFF0D74E3);
@@ -39,19 +32,19 @@ class AppTheme {
         onTertiaryContainer: Colors.white,
         error: warningColor, // Or a dedicated error color if provided
         onError: inkColor,
-        background: surfaceColor, // Typically surface is for components
-        onBackground: inkColor,
         surface: surfaceColor,
         onSurface: inkColor,
-        surfaceVariant: Color.alphaBlend(
-          primaryColor.withOpacity(0.08),
+        surfaceContainerHighest: Color.alphaBlend(
+          primaryColor.withAlpha(
+            (primaryColor.a * 0.08).round(),
+          ), // Used .a for alpha
           surfaceColor,
         ),
         onSurfaceVariant: inkColor,
-        outline: inkColor.withOpacity(0.5),
-        outlineVariant: inkColor.withOpacity(0.25),
-        shadow: Colors.black.withOpacity(0.1),
-        scrim: Colors.black.withOpacity(0.5),
+        outline: inkColor.withAlpha((inkColor.a * 0.5).round()),
+        outlineVariant: inkColor.withAlpha((inkColor.a * 0.25).round()),
+        shadow: Colors.black.withAlpha((Colors.black.a * 0.1).round()),
+        scrim: Colors.black.withAlpha((Colors.black.a * 0.5).round()),
         inverseSurface: inkColor,
         onInverseSurface: surfaceColor,
         inversePrimary: surfaceColor,
@@ -139,7 +132,7 @@ class AppTheme {
           ),
           bodySmall: base.bodySmall?.copyWith(
             fontFamily: bodyFont,
-            color: inkColor.withOpacity(0.7),
+            color: inkColor.withAlpha((inkColor.a * 0.7).round()),
           ),
           labelLarge: base.labelLarge?.copyWith(
             fontFamily: bodyFont,
@@ -152,7 +145,7 @@ class AppTheme {
           ),
           labelSmall: base.labelSmall?.copyWith(
             fontFamily: bodyFont,
-            color: inkColor.withOpacity(0.7),
+            color: inkColor.withAlpha((inkColor.a * 0.7).round()),
           ),
         )
         .apply(bodyColor: inkColor, displayColor: inkColor);
@@ -163,8 +156,12 @@ class AppTheme {
       style: FilledButton.styleFrom(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
-        disabledBackgroundColor: primaryColor.withOpacity(0.5),
-        disabledForegroundColor: Colors.white.withOpacity(0.8),
+        disabledBackgroundColor: primaryColor.withAlpha(
+          (primaryColor.a * 0.5).round(),
+        ),
+        disabledForegroundColor: Colors.white.withAlpha(
+          (Colors.white.a * 0.8).round(),
+        ),
         padding: const EdgeInsets.symmetric(
           vertical: 14,
         ), // 14px vertical padding
@@ -187,8 +184,8 @@ class AppTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12), // 12px radius
         side: BorderSide(
-          color: inkColor.withOpacity(
-            0.2,
+          color: inkColor.withAlpha(
+            (inkColor.a * 0.2).round(),
           ), // 2px stroke (simulated with border)
           width: 2,
         ),

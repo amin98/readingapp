@@ -1,30 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:reading_app/theme/app_theme.dart'; // Ensure this is the only import for app_theme
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import 'screens/homepage_screen.dart'; // Import the homepage screen
-import 'screens/onboarding_screen.dart'; // Import the *correct* onboarding screen
-import 'screens/welcome_screen.dart'; // Import the Welcome screen
+// import 'package:shared_preferences/shared_preferences.dart'; // No longer needed here
 
-// import 'theme/app_theme.dart';
+import 'coordinator/onboarding_coordinator.dart';
+import 'theme.dart';
+// import 'screens/homepage_screen.dart'; // No longer needed for initial routing
+
 void main() {
-  runApp(const ReadingApp());
-}
+  WidgetsFlutterBinding.ensureInitialized();
+  // final prefs = await SharedPreferences.getInstance(); // Removed
+  // final seen = prefs.getBool('seen_onboarding') ?? false; // Removed
 
-class ReadingApp extends StatelessWidget {
-  const ReadingApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Reading App',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme, // Correctly apply AppTheme.theme here
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const WelcomeScreen(),
-        '/onboarding': (context) => const OnboardingScreen(),
-        '/discovery': (context) => HomepageScreen(),
-      },
-    );
-  }
+  runApp(
+    ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: kBg,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: kPrimary,
+          ).copyWith(onPrimary: Colors.white, primary: kPrimary),
+          textTheme: GoogleFonts.playfairDisplayTextTheme().apply(
+            bodyColor: kText,
+            displayColor: kText,
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.transparent,
+            foregroundColor: kText,
+            elevation: 0,
+          ),
+        ),
+        home: const OnboardingCoordinator(),
+      ),
+    ),
+  );
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// One-time splash shown on first launch.
-/// After the user taps **Continue** you should push `/onboarding`
+/// After the user taps **Continue** you should push to the vibe picker
 /// and persist a `hasSeenWelcome` flag so this route is skipped next time.
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -15,10 +15,8 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface, // pale cream in your scheme
+      backgroundColor: const Color(0xFFFFF3D7), // Applied new background color
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -35,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                     fontSize:
                         Theme.of(context).textTheme.headlineMedium?.fontSize,
                     fontWeight: FontWeight.w500,
-                    color: Theme.of(context).textTheme.headlineLarge?.color,
+                    color: const Color(0xFF351A09),
                   ),
                 ),
 
@@ -57,7 +55,7 @@ class WelcomeScreen extends StatelessWidget {
                   style: GoogleFonts.robotoSlab(
                     fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
                     height: 1.35,
-                    color: Theme.of(context).textTheme.titleLarge?.color,
+                    color: const Color(0xFF351A09),
                   ),
                 ),
 
@@ -89,7 +87,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                       onPressed:
-                          () => Navigator.pushNamed(context, '/onboarding'),
+                          () => Navigator.pushNamed(context, 'vibePicker'),
                       child: Center(
                         child: Text(
                           'Continue',
