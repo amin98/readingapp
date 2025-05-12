@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Add this import for HapticFeedback
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../controllers/onboarding_notifier.dart';
@@ -29,6 +30,9 @@ class _VibePickerScreenState extends ConsumerState<VibePickerScreen> {
   final Set<String> selected = {};
 
   void _toggle(String asset) {
+    // Add haptic feedback
+    HapticFeedback.vibrate();
+
     setState(() {
       if (selected.contains(asset)) {
         selected.remove(asset);
@@ -87,7 +91,7 @@ class _VibePickerScreenState extends ConsumerState<VibePickerScreen> {
                 onTap: () => _toggle(asset),
                 child: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    final PADDING = 12.0;
+                    final PADDING = 4.0;
                     // Use the smaller of the constrained width or height to ensure we can make a square
                     // that fits within the carousel item slot, accounting for padding.
                     final double constrainedWidth =
@@ -166,13 +170,38 @@ class _VibePickerScreenState extends ConsumerState<VibePickerScreen> {
               ignoring: selected.length != 3,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
-                child: ElevatedButton(
-                  onPressed: _tryContinue,
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 52),
-                    textStyle: const TextStyle(fontSize: 18),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1B7DD5),
+                      borderRadius: BorderRadius.circular(13),
+                      border: const Border(
+                        bottom: BorderSide(color: Color(0xFF196AB2), width: 4),
+                      ),
+                    ),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: _tryContinue,
+                      child: Center(
+                        child: Text(
+                          'Continue',
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleLarge?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  child: const Text('Continue'),
                 ),
               ),
             ),
@@ -245,43 +274,85 @@ class _ConfirmationDialog extends StatelessWidget {
   final List<String> assets;
 
   @override
-  Widget build(BuildContext context) => AlertDialog(
-    title: const Text(
-      'Are you sure these\nobjects speak to your vibe?',
-      textAlign: TextAlign.center,
-    ),
-    content: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children:
-          assets
-              .map(
-                (a) => ClipOval(
-                  child: Image.asset(
-                    'assets/objects/$a',
-                    width: 48,
-                    height: 48,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              )
-              .toList(),
-    ),
-    actionsAlignment: MainAxisAlignment.center,
-    actions: [
-      TextButton(
-        style: TextButton.styleFrom(
-          foregroundColor: kText,
-          backgroundColor: Colors.grey.shade300,
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      backgroundColor: kBg, // Using kBg from theme.dart
+      title: Text(
+        'Your chosen objects!',
+        textAlign: TextAlign.center,
+        style: textTheme.titleLarge?.copyWith(
+          color: kText,
+          fontWeight: FontWeight.bold,
         ),
-        onPressed:
-            () => Navigator.pop(context, false), // Should use dialog context
-        child: const Text('Go Back'),
       ),
-      ElevatedButton(
-        onPressed:
-            () => Navigator.pop(context, true), // Should use dialog context
-        child: const Text('Yes, continue'),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children:
+            assets
+                .map(
+                  (a) => ClipOval(
+                    child: Image.asset(
+                      'assets/objects/$a',
+                      width: 75, // Slightly larger for better visibility
+                      height: 75,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                )
+                .toList(),
       ),
-    ],
-  );
+      actionsAlignment: MainAxisAlignment.center,
+      actionsPadding: const EdgeInsets.only(
+        bottom: 24.0,
+        left: 14.0,
+        right: 14.0,
+      ),
+      actions: [
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF4A4A4A),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+            ),
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(
+              'Go Back',
+              style: textTheme.titleMedium?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: kPrimary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(
+              'Confirm', // Changed from "Yes, continue"
+              style: textTheme.titleMedium?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

@@ -38,23 +38,39 @@ class _WorldBuildingScreenState extends ConsumerState<WorldBuildingScreen> {
     // Example: Update onboarding state: ref.read(onboardingProvider.notifier).setSomeValue(...);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF3D7),
-      appBar: AppBar(title: const Text('World Building')),
+      // backgroundColor is now inherited from the theme in main.dart
+      appBar: AppBar(
+        title: const Text('Building Your World...'),
+      ), // Updated title
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('World Building Screen - Placeholder'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _timer?.cancel(); // Cancel timer if manually navigating
-                // TODO: Add logic to update onboarding state if needed
-                Navigator.pushNamed(context, 'personaReveal');
-              },
-              child: const Text('Next: Persona Reveal (or wait 3s)'),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(32.0), // Added padding
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/objects/loadig.png', // Added image
+                height: 250, // Example height, adjust as needed
+              ),
+              const SizedBox(height: 40), // Increased spacing
+              Text(
+                'Crafting your unique space...', // Updated placeholder text
+                style: Theme.of(context).textTheme.headlineSmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40), // Increased spacing
+              // Styled Button from WelcomeScreen
+              // ThemedButton(
+              //   text: 'Next',
+              //   width: 250, // Adjusted width for this screen
+              //   onPressed: () {
+              //     _timer?.cancel(); // Cancel timer if manually navigating
+              //     // TODO: Add logic to update onboarding state if needed
+              //     Navigator.pushNamed(context, 'personaReveal');
+              //   },
+              // ),
+            ],
+          ),
         ),
       ),
     );

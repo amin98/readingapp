@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import '../../widgets/themed_button.dart';
+// import 'package:google_fonts/google_fonts.dart'; // Removed
 
 /// One-time splash shown on first launch.
 /// After the user taps **Continue** you should push to the vibe picker
@@ -29,9 +31,7 @@ class WelcomeScreen extends StatelessWidget {
                 Text(
                   'Welcome to your new\nreading experience!',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.robotoSlab(
-                    fontSize:
-                        Theme.of(context).textTheme.headlineMedium?.fontSize,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w500,
                     color: const Color(0xFF351A09),
                   ),
@@ -52,8 +52,7 @@ class WelcomeScreen extends StatelessWidget {
                 Text(
                   'The goal is simple:\nFind your vibe.',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.robotoSlab(
-                    fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     height: 1.35,
                     color: const Color(0xFF351A09),
                   ),
@@ -61,49 +60,10 @@ class WelcomeScreen extends StatelessWidget {
 
                 const SizedBox(height: _kVerticalGap * 2),
                 // — primary action —
-                SizedBox(
+                ThemedButton(
+                  text: 'Continue',
+                  onPressed: () => Navigator.pushNamed(context, 'vibePicker'),
                   width: 200,
-                  height: _kButtonHeight,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1B7DD5), // flat blue background
-                      borderRadius: BorderRadius.circular(13),
-                      border: const Border(
-                        bottom: BorderSide(
-                          color: Color(
-                            0xFF196AB2,
-                          ), // mimic CSS-like bottom border
-                          width: 4,
-                        ),
-                      ),
-                    ),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding:
-                            EdgeInsets
-                                .zero, // Let the Container handle the sizing
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed:
-                          () => Navigator.pushNamed(context, 'vibePicker'),
-                      child: Center(
-                        child: Text(
-                          'Continue',
-                          style: GoogleFonts.robotoSlab(
-                            fontSize:
-                                Theme.of(
-                                  context,
-                                ).textTheme.titleLarge?.fontSize,
-                            height: 1.35,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
               ],
             ),
